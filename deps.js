@@ -35,3 +35,64 @@ function get_this_dir_url(doc_cur_script){
 		return url.substring(0, url.lastIndexOf("/") + 1); // взять только начало строки без того что за последним /
 	}
 }
+
+
+
+/* подключает скрипт с заданным в аргументе путём и именем в виде /someCat/someScrpt.js из каталога скрипта
+АРГУМЕНТЫ:
+	path - путь к скрипту в виде /someCat/someScrpt.js
+	is_async - Не обязательный. ВНИМАНИЕ! Не работает так как может ожидаться - то есть если в скрипте есть подключение скрипта с is_async = false это не значит, что скрипт подождёт, пока он подключится. Нет, он сразу продолжит выполнение после подключения, а подключенный скрипт подключится всё равно потом.
+	to_head - добавлять ли скрипт в head (true - в head, false - в body) не обязательный
+НЕ ЗАБЫВАЙ! Подключение произойдёт после (document).ready!
+Если подключаемый модуль используется в JS в основном документе то лучше не рисковать и использование выполнять с задержкой после document ready:
+$(document).ready(function(){setTimeout(showRndCh1, 4000);});
+function showRndCh1(){
+  то что надо делать
+};
+*/
+function include_script(path, is_async = true, to_head = true){
+	let script = document.createElement('script');
+	script.src = path;
+	script.async = is_async;
+	if(to_head)
+		document.head.appendChild(script);
+	else
+		document.body.appendChild(script);
+}
+
+
+
+/* подключает стиль
+АРГУМЕНТЫ:
+	href - URL или путь в виде /someCat/some.css
+*/
+function include_style(href){
+    let style = document.createElement('link');
+    style.rel  = 'stylesheet';
+		style.href = href;
+    document.head.appendChild(style);
+}
+
+
+
+/* получить числовое значение css-параметра
+Обрабатывает только значения вида '123px' и '123' (возвращает число). В остальных случаях возвращает 0;
+*/
+function get_css_numeric_val(css_val){
+	if(css_val === '')
+		return 0; // сомнительное решение.
+	if(!isNaN) // если 123 или '123'
+		return css_val;
+	else
+		if(css_val.substr(css_val.length - 2, 2) === 'px') // если это величина в px
+			return css_val.replace('px', '');
+		else
+			return 0;
+}
+
+
+
+// переименование вывода в консоль
+function c_log(msg){
+	console.log(msg);
+}
